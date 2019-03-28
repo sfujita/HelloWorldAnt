@@ -21,6 +21,7 @@
     <!-- ビルド成果物ディレクトリ -->
     <property name="dir.target" value="target" />
     <property name="dir.target.classes" value="${dir.target}/classes" />
+	<property name="test.class.dir" value="${dir.target.classes}/test" />
     <property name="dir.target.resources" value="${dir.target}/resources" />
     <property name="dir.target.dependency" value="${dir.target}/dependency" />
 
@@ -34,9 +35,10 @@
     <!-- libディレクトリ -->
     <property name="dir.lib" value="lib" />
 	<property name="dir.lib.junit" value="lib\junit" />
+	<property name="report.dir" value="report" />
 	<property name="lib.servlet.dir" value="lib\servlet" />
 	<property name="lib.junit.dir" value="lib\junit" />
-	<property name="report.junit.dir" location="${report.dir}/junit" />
+	<property name="report.junit.dir" value="${report.dir}/junit" />
 
     <!-- ソースファイルエンコード -->
     <property name="src.enc" value="UTF-8" />
