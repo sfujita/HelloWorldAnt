@@ -146,12 +146,15 @@
 					<include name="*.jar" />
 				</fileset>
 			</classpath>
+			<!-- jenkins側で出力で切るっぽいのでコメントアウト -->
+			<!--
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${report.junit.dir}">
 				<fileset dir="${test.src.dir}">
     				<include name="**/*Test.java" />
 				</fileset>
 			</batchtest>
+			-->
 		</junit>
 	</target>
 
