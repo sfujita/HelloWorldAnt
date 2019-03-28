@@ -26,12 +26,17 @@
 
     <!-- srcディレクトリ -->
     <property name="dir.src" value="src" />
+	<property name="test.src.dir" value="src\test" />
 
     <!-- リソースファイルディレクトリ -->
     <property name="dir.resources" value="resources" />
 
     <!-- libディレクトリ -->
     <property name="dir.lib" value="lib" />
+	<property name="dir.lib.junit" value="lib\junit" />
+	<property name="lib.servlet.dir" value="lib\servlet" />
+	<property name="lib.junit.dir" value="lib\junit" />
+	<property name="report.junit.dir" location="${report.dir}/junit" />
 
     <!-- ソースファイルエンコード -->
     <property name="src.enc" value="UTF-8" />
@@ -44,7 +49,13 @@
         <fileset dir="${dir.lib}" >
             <include name="*" />
         </fileset>
+    	<fileset dir="${dir.lib.junit}" >
+    	    <include name="*.jar" />
+    	</fileset>
     </path>
+
+	<target name="main" depends="clean,compile,test">
+	</target>
 
     <!-- JARファイル作成(開発用) -->
     <target name="makeJar" description="開発用JARファイル作成">
@@ -97,6 +108,18 @@
             target="1.8"
             includeAntRuntime="false"
             debug="true"/>
+    	<mkdir dir="${test.class.dir}"/>
+    	<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" includeAntRuntime="true">
+	    	<classpath>
+	    		<pathelement location="${java.class.dir}" />
+	    		<fileset dir="${lib.servlet.dir}">
+	    			<include name="*.jar" />
+	    		</fileset>
+	    		<fileset dir="${lib.junit.dir}">
+	    		    <include name="*.jar" />
+	    		</fileset>
+	    	</classpath>
+    	</javac>
     </target>
 
     <!-- デプロイ用ZIPファイルの作成 -->
@@ -107,6 +130,28 @@
             excludes="${dir.target.classes}/*"
         />
     </target>
+
+	<target name="test" depends="compile" description="ユニットテストの実行">
+		<mkdir dir="${report.junit.dir}"/>
+		<junit printsummary="yes" haltonfailure="no">
+			<classpath>
+				<pathelement location="${java.class.dir}" />
+				<pathelement location="${test.class.dir}" />
+				<fileset dir="${lib.servlet.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${lib.junit.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${report.junit.dir}">
+				<fileset dir="${test.src.dir}">
+    				<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
 
     <!-- ビルド成果物削除 -->
     <target name="clean" description="ビルド成果物削除">
